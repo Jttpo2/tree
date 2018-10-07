@@ -14,7 +14,7 @@ function setup() {
 function draw() {
 	background(backgroundColor);
 
-	drawTestSquare();
+	drawCircle(width / 2, height / 2, 400);
 }
 
 function windowResized() {
@@ -23,8 +23,11 @@ function windowResized() {
 		window.innerHeight);
 }
 
-function drawTestSquare() {
-	fill(100);
-	rectMode(CENTER);
-	rect(width/2, height/2, 50, 50);
+function drawCircle(x, y, radius) {
+	stroke(100);
+	fill(50);
+	ellipse(x, y, radius, radius);
+	if (radius > 2) {
+		drawCircle(x, y, radius * 0.75);
+	}
 }
