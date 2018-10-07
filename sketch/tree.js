@@ -27,8 +27,10 @@ function drawCircle(x, y, radius) {
 	stroke(100);
 	noFill();
 	ellipse(x, y, radius, radius);
-	if (radius > 2) {
+	if (radius > 12) {
 		drawCircle(x + radius / 2, y, radius / 2);
 		drawCircle(x - radius / 2, y, radius / 2);
+		drawCircle(x, y + radius / 2, radius / 2);
+		drawCircle(x, y - radius / 2 , radius / 2);
 	}
 }
