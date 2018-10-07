@@ -21,7 +21,8 @@ gulp.task('reload', function() {
 var sketchFolder = "sketch/";
 var sketchFiles = [
 'tree.js',
-'kochline.js'
+'kochline.js',
+'snowflake.js'
 ];
 
 sketchFiles.forEach(function(fileName, index) {
