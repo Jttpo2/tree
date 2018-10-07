@@ -22,7 +22,8 @@ var sketchFolder = "sketch/";
 var sketchFiles = [
 'tree.js',
 'kochline.js',
-'snowflake.js'
+'snowflake.js',
+'branch.js'
 ];
 
 sketchFiles.forEach(function(fileName, index) {
