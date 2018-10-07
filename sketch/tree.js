@@ -25,9 +25,10 @@ function windowResized() {
 
 function drawCircle(x, y, radius) {
 	stroke(100);
-	fill(50);
+	noFill();
 	ellipse(x, y, radius, radius);
 	if (radius > 2) {
-		drawCircle(x, y, radius * 0.75);
+		drawCircle(x + radius / 2, y, radius / 2);
+		drawCircle(x - radius / 2, y, radius / 2);
 	}
 }
