@@ -1,6 +1,7 @@
 new p5();
 
 let backgroundColor;
+let lines = [];
 
 function setup() {
 	let canvas = createCanvas(
@@ -9,13 +10,20 @@ function setup() {
 	);
 
 	backgroundColor = color(200);
+
+		lines = setupKochSnowflake();
+
+	// lines.push(new KochLine(start, end));
+
+	for (let i=0; i<5; i++) {
+	 generate();
+ }
 }
 
 function draw() {
 	background(backgroundColor);
 
-	// drawCircle(width / 2, height / 2, 400);
-	cantor(10, 20, width - 20);
+	lines.forEach(line => line.display());
 }
 
 function windowResized() {
@@ -24,29 +32,36 @@ function windowResized() {
 		window.innerHeight);
 	}
 
-	function drawCircle(x, y, radius) {
-		stroke(100);
-		noFill();
-		ellipse(x, y, radius, radius);
-		if (radius > 12) {
-			drawCircle(x + radius / 2, y, radius / 2);
-			drawCircle(x - radius / 2, y, radius / 2);
-			drawCircle(x, y + radius / 2, radius / 2);
-			drawCircle(x, y - radius / 2 , radius / 2);
-		}
+	function generate() {
+		let next = [];
+		lines.forEach(l => {
+			let a = l.kochA();
+			let b = l.kochB();
+			let c = l.kochC();
+			let d = l.kochD();
+			let e = l.kochE();
+
+			next.push(new KochLine(a, b));
+			next.push(new KochLine(b, c));
+			next.push(new KochLine(c, d));
+			next.push(new KochLine(d, e));
+		})
+		lines = next;
 	}
 
-	function cantor(x, y, len) {
-		stroke(50);
-		strokeWeight(1);
-		noFill();
-		line(x, y, x + len, y);
-		ellipse(x + len / 2, y, len, len);
-
-		if (len > 2) {
-				let nextLen = len / 3;
-				y += 10;
-				cantor(x, y, nextLen);
-				cantor(x + nextLen * 2, y, nextLen);
+	function setupKochSnowflake() {
+		let lines = [];
+		let center = createVector(width / 2, height / 2);
+		let radius = 90;
+		let sections = 3;
+		let r = createVector(0, -radius);
+		let start = p5.Vector.add(center, r);
+		let end = null;
+		for (let s=0; s<sections; s++) {
+			r.rotate(2 * PI/sections);
+			let end = p5.Vector.add(center, r);
+			lines.push(new KochLine(start, end));
+			start = end;
 		}
+		return lines;
 	}

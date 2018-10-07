@@ -16,11 +16,12 @@ gulp.task('watch', function() {
 
 gulp.task('reload', function() {
 	livereload.reload();
-}); 
+});
 
 var sketchFolder = "sketch/";
 var sketchFiles = [
-'emptyp5project.js'
+'tree.js',
+'kochline.js'
 ];
 
 sketchFiles.forEach(function(fileName, index) {
