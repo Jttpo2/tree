@@ -13,7 +13,7 @@ function setup() {
 
 function draw() {
 	background(backgroundColor);
-	
+
 	drawTestSquare();
 }
 
@@ -24,8 +24,7 @@ function windowResized() {
 }
 
 function drawTestSquare() {
-	fill(100); 
+	fill(100);
 	rectMode(CENTER);
 	rect(width/2, height/2, 50, 50);
 }
-
