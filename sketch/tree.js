@@ -26,14 +26,17 @@ function draw() {
 class Tree {
 	constructor() {
 		this.branches = [];
-		this.branchDepth = 6;
+		this.branchDepth = 7;
 
 		this.initialBranchLength = height * 1/3;
 
 		this.toPreviousBranchLengthRatio = 2/3;
 		this.theta = PI/8;
-		this.aspectRatio = 1/25;
+		this.aspectRatio = 1/40;
 		this.minLength = 2;
+
+		this.stdDevForAngle = PI / 30;
+		this.stdDevForLength = 1/20;
 
 		let foot = createVector(width/2, height);
 		let dirLength = createVector(0, -this.initialBranchLength);
@@ -55,13 +58,16 @@ class Tree {
 		this.branches.forEach(b => {
 			next.push(b);
 			let start = b.getEnd();
-			let standardDev = PI / 30;
-			let leftAngle = randomGaussian(-this.theta, standardDev);
-			let rightAngle = randomGaussian(this.theta, standardDev);
+			let leftAngle = randomGaussian(-this.theta, this.stdDevForAngle);
+			let rightAngle = randomGaussian(this.theta, this.stdDevForAngle);
+
+			let toPreviousLengthRatioLeft = randomGaussian(this.toPreviousBranchLengthRatio, this.stdDevForLength);
+			let toPreviousLengthRatioRight = randomGaussian(this.toPreviousBranchLengthRatio, this.stdDevForLength);
+
 			next.push(
 				new Branch(
 					start,
-					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(leftAngle),
+					b.getDirlength().mult(toPreviousLengthRatioRight).rotate(leftAngle),
 					this.aspectRatio
 				)
 			);
