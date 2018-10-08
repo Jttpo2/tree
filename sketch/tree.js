@@ -26,17 +26,20 @@ function draw() {
 class Tree {
 	constructor() {
 		this.branches = [];
-		this.branchDepth = 7;
+		this.branchDepth = 6;
 
 		this.initialBranchLength = height * 1/3;
 
+		this.branchingFactor = 2;
 		this.toPreviousBranchLengthRatio = 2/3;
+		this.thinningFactor = 5/10;
 		this.theta = PI/8;
-		this.aspectRatio = 1/40;
+		this.aspectRatio = 1/30;
 		this.minLength = 2;
 
-		this.stdDevForAngle = PI / 30;
+		this.stdDevForAngle = PI / 0;
 		this.stdDevForLength = 1/20;
+		this.stdDevForBranching = 1;
 
 		let foot = createVector(width/2, height);
 		let dirLength = createVector(0, -this.initialBranchLength);
@@ -55,28 +58,30 @@ class Tree {
 
 	generate() {
 		let next = [];
-		this.branches.forEach(b => {
-			next.push(b);
-			let start = b.getEnd();
-			let leftAngle = randomGaussian(-this.theta, this.stdDevForAngle);
-			let rightAngle = randomGaussian(this.theta, this.stdDevForAngle);
+		this.branches.forEach(prevBr => {
+			next.push(prevBr);
+			let noOfBranches = randomGaussian(this.branchingFactor, this.stdDevForBranching);
+			for (let i=0; i<noOfBranches; i++ ) {
+				let start = prevBr.getEnd();
+				let angle = randomGaussian(0, this.theta);
 
-			let toPreviousLengthRatioLeft = randomGaussian(this.toPreviousBranchLengthRatio, this.stdDevForLength);
-			let toPreviousLengthRatioRight = randomGaussian(this.toPreviousBranchLengthRatio, this.stdDevForLength);
+				let toPreviousLengthRatioLeft = randomGaussian(this.toPreviousBranchLengthRatio, this.stdDevForLength);
+				let toPreviousLengthRatioRight = randomGaussian(this.toPreviousBranchLengthRatio, this.stdDevForLength);
 
-			next.push(
-				new Branch(
-					start,
-					b.getDirlength().mult(toPreviousLengthRatioRight).rotate(leftAngle),
-					this.aspectRatio
-				)
-			);
-		 	next.push(
-				new Branch(
-					start,
-					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(rightAngle),
-					this.aspectRatio
-					));
+				next.push(
+					new Branch(
+						start,
+						prevBr.getDirlength().mult(toPreviousLengthRatioRight).rotate(angle),
+						this.aspectRatio * this.thinningFactor
+					)
+				);
+				// next.push(
+				// 	new Branch(
+				// 		start,
+				// 		prevBr.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(rightAngle),
+				// 		this.aspectRatio
+				// 	));
+			}
 		});
 		this.branches = next;
 	}
