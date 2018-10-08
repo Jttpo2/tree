@@ -26,13 +26,13 @@ function draw() {
 class Tree {
 	constructor() {
 		this.branches = [];
-		this.branchDepth = 4;
+		this.branchDepth = 6;
 
 		this.initialBranchLength = height * 1/3;
 
 		this.toPreviousBranchLengthRatio = 2/3;
 		this.theta = PI/8;
-		this.aspectRatio = 1/10;
+		this.aspectRatio = 1/25;
 		this.minLength = 2;
 
 		let foot = createVector(width/2, height);
@@ -40,7 +40,8 @@ class Tree {
 		this.branches.push(
 			new Branch(
 				foot,
-				dirLength
+				dirLength,
+				this.aspectRatio
 			)
 		);
 
@@ -54,16 +55,21 @@ class Tree {
 		this.branches.forEach(b => {
 			next.push(b);
 			let start = b.getEnd();
+			let standardDev = PI / 30;
+			let leftAngle = randomGaussian(-this.theta, standardDev);
+			let rightAngle = randomGaussian(this.theta, standardDev);
 			next.push(
 				new Branch(
 					start,
-					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(-this.theta)
+					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(leftAngle),
+					this.aspectRatio
 				)
 			);
 		 	next.push(
 				new Branch(
 					start,
-					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(this.theta)
+					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(rightAngle),
+					this.aspectRatio
 					));
 		});
 		this.branches = next;
@@ -77,7 +83,6 @@ class Tree {
 		// }
 		this.branches.forEach(branch => branch.display());
 	}
-
 }
 
 function windowResized() {

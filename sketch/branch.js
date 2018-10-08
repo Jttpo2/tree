@@ -1,11 +1,13 @@
 class Branch {
-  constructor(start, dirLength) {
+  constructor(start, dirLength, aspectRatio) {
     this.start = start;
     this.dirLength = dirLength;
+    this.aspectRatio = aspectRatio;
   }
 
   display() {
     let end = this.getEnd();
+    strokeWeight(this.dirLength.mag() * this.aspectRatio);
     line(this.start.x, this.start.y, end.x, end.y);
   }
 
