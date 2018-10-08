@@ -2,8 +2,6 @@ class Branch {
   constructor(start, dirLength) {
     this.start = start;
     this.dirLength = dirLength;
-
-    console.log(this.dirLength)
   }
 
   display() {

@@ -21,19 +21,17 @@ function draw() {
 		mouseMovedFromInitPosition = mouseX != 0;
 	}
 	tree.display();
-
-
 }
 
 class Tree {
 	constructor() {
 		this.branches = [];
-		this.branchDepth = 1;
+		this.branchDepth = 4;
 
-		this.initialBranchLength = height/2;
+		this.initialBranchLength = height * 1/3;
 
-		this.branchLengthRatio = 2/3;
-		this.theta = PI;
+		this.toPreviousBranchLengthRatio = 2/3;
+		this.theta = PI/8;
 		this.aspectRatio = 1/10;
 		this.minLength = 2;
 
@@ -54,37 +52,22 @@ class Tree {
 	generate() {
 		let next = [];
 		this.branches.forEach(b => {
+			next.push(b);
 			let start = b.getEnd();
 			next.push(
 				new Branch(
 					start,
-					b.getDirlength().mult(this.branchLengthRatio).rotate(-this.theta)
+					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(-this.theta)
 				)
 			);
 		 	next.push(
 				new Branch(
 					start,
-					b.getDirlength().mult(this.branchLengthRatio).rotate(this.theta)
+					b.getDirlength().mult(this.toPreviousBranchLengthRatio).rotate(this.theta)
 					));
 		});
 		this.branches = next;
 	}
-
-	// branch(length) {
-	// 	strokeWeight(length * this.aspectRatio);
-	// 	line(0, 0, 0, -length);
-	// 	translate(0, -length);
-	// 	length *= this.branchLengthRatio;
-	// 	if (length < this.minLength) return;
-	// 	push();
-	// 	rotate(this.theta);
-	// 	this.branch(length);
-	// 	pop();
-	// 	push();
-	// 	rotate(-this.theta);
-	// 	this.branch(length);
-	// 	pop();
-	// }
 
 	display() {
 		// if (mouseMovedFromInitPosition) {
@@ -92,13 +75,6 @@ class Tree {
 		// } else {
 		// 	this.theta = PI * 1/7;
 		// }
-		//
-		// stroke(50);
-		// push();
-		// translate(width/2, height);
-		// this.branch(this.initialBranchLength, this.branchWidth);
-		// pop();
-
 		this.branches.forEach(branch => branch.display());
 	}
 
